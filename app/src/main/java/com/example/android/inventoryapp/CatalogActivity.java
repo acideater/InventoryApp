@@ -56,14 +56,65 @@ public class CatalogActivity extends AppCompatActivity {
     private void displayDatabaseInfo() {
         // Create and/or open a database to read from it
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        // Perform this raw SQL query "SELECT * FROM products"
-        // to get a Cursor that contains all rows from the products table.
-        Cursor cursor = db.rawQuery("SELECT * FROM " + ProductEntry.TABLE_NAME, null);
+        String[] projection = {
+                ProductEntry._ID,
+                ProductEntry.COLUMN_PRODUCT_NAME,
+                ProductEntry.COLUMN_PRODUCT_PRICE,
+                ProductEntry.COLUMN_PRODUCT_QUANTITY,
+                ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME,
+                ProductEntry.COLUMN_PRODUCT_SUPPLIER_CONTACT
+        };
+        Cursor cursor = db.query(
+                ProductEntry.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null);
+        TextView displayView = findViewById(R.id.text_view_product);
+
         try {
-            // Display the number of rows in the Cursor (which reflects the number of rows in the
-            // products table in the database).
-            TextView displayView = findViewById(R.id.text_view_product);
-            displayView.setText("Number of rows in products database table: " + cursor.getCount());
+            // Create a header in the Text View that looks like this:
+            //
+            // The inventory table contains <number of rows in Cursor> products.
+            // _id - name - price - quantity - supplier name - supplier contact
+            //
+            // In the while loop below, iterate through the rows of the cursor and display
+            // the information from each column in this order.
+            displayView.setText("The inventory table contains " + cursor.getCount() + " products.\n\n");
+            displayView.append(ProductEntry._ID + " - " +
+                    ProductEntry.COLUMN_PRODUCT_NAME + " - " +
+                    ProductEntry.COLUMN_PRODUCT_PRICE + " - " +
+                    ProductEntry.COLUMN_PRODUCT_QUANTITY + " - " +
+                    ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME + " - " +
+                    ProductEntry.COLUMN_PRODUCT_SUPPLIER_CONTACT + "\n");
+            // Figure out the index of each column
+            int idColumnIndex = cursor.getColumnIndex(ProductEntry._ID);
+            int nameColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_NAME);
+            int priceColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_PRICE);
+            int quantityColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_QUANTITY);
+            int supplierNameColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME);
+            int supplierContactColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_SUPPLIER_CONTACT);
+            // Iterate through all the returned rows in the cursor
+            while (cursor.moveToNext()) {
+                // Use that index to extract the String or Int value of the word
+                // at the current row the cursor is on.
+                int currentID = cursor.getInt(idColumnIndex);
+                String currentName = cursor.getString(nameColumnIndex);
+                String currentPrice = cursor.getString(priceColumnIndex);
+                int currentQuantity = cursor.getInt(quantityColumnIndex);
+                String currentSupplierName = cursor.getString(supplierNameColumnIndex);
+                String currentSupplierContact = cursor.getString(supplierContactColumnIndex);
+                // Display the values from each column of the current row in the cursor in the TextView
+                displayView.append(("\n" + currentID + " - " +
+                        currentName + " - " +
+                        currentPrice + " - " +
+                        currentQuantity + " - " +
+                        currentSupplierName + " - " +
+                        currentSupplierContact));
+            }
+
         } finally {
             // Always close the cursor when you're done reading from it. This releases all its
             // resources and makes it invalid.
@@ -84,7 +135,7 @@ public class CatalogActivity extends AppCompatActivity {
         values.put(ProductEntry.COLUMN_PRODUCT_PRICE, "900");
         values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, 7);
         values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME, "Dell");
-        values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME, "4123324484");
+        values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_CONTACT, "4123324484");
         // Insert a new row for Dummy in the database, returning the ID of that new row.
         // The first argument for db.insert() is the products table name.
         // The second argument provides the name of a column in which the framework
