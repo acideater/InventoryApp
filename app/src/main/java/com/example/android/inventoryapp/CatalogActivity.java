@@ -1,5 +1,6 @@
 package com.example.android.inventoryapp;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,6 +16,11 @@ import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
 import com.example.android.inventoryapp.data.ProductDbHelper;
 
 public class CatalogActivity extends AppCompatActivity {
+
+    /**
+     * Database helper that will provide us access to the database
+     */
+    private ProductDbHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,10 @@ public class CatalogActivity extends AppCompatActivity {
             }
         });
 
+        // To access our database, we instantiate our subclass of SQLiteOpenHelper
+        // and pass the context, which is the current activity.
+        mDbHelper = new ProductDbHelper(this);
+
         displayDatabaseInfo();
     }
 
@@ -40,9 +50,6 @@ public class CatalogActivity extends AppCompatActivity {
      * the products database.
      */
     private void displayDatabaseInfo() {
-        // To access our database, we instantiate our subclass of SQLiteOpenHelper
-        // and pass the context, which is the current activity.
-        ProductDbHelper mDbHelper = new ProductDbHelper(this);
         // Create and/or open a database to read from it
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         // Perform this raw SQL query "SELECT * FROM products"
@@ -60,6 +67,31 @@ public class CatalogActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Helper method to insert hardcoded product data into database. For debugging purposes only.
+     */
+    private void insertProduct() {
+        // Gets the database in write mode
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        // Create a ContentValues object where column names are the keys and attributes are the
+        // values.
+        ContentValues values = new ContentValues();
+        values.put(ProductEntry.COLUMN_PRODUCT_NAME, "Laptop");
+        values.put(ProductEntry.COLUMN_PRODUCT_PRICE, "900");
+        values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, 7);
+        values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME, "Dell");
+        values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME, "4123324484");
+        // Insert a new row for Dummy in the database, returning the ID of that new row.
+        // The first argument for db.insert() is the products table name.
+        // The second argument provides the name of a column in which the framework
+        // can insert NULL in the event that the ContentValues is empty (if
+        // this is set to "null", then the framework will not insert a row when
+        // there are no values).
+        // The third argument is the ContentValues object containing the info for the product.
+        long newRowId = db.insert(ProductEntry.TABLE_NAME, null, values);
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_catalog.xml file.
@@ -74,7 +106,8 @@ public class CatalogActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
-                // Do nothing for now
+                insertProduct();
+                displayDatabaseInfo();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
