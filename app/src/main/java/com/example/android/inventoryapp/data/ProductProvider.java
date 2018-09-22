@@ -106,11 +106,6 @@ public class ProductProvider extends ContentProvider {
     }
 
     @Override
-    public String getType(Uri uri) {
-        return null;
-    }
-
-    @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
         final int match = sUriMatcher.match(uri);
         switch (match) {
@@ -144,10 +139,9 @@ public class ProductProvider extends ContentProvider {
 
         // No need to check the Supplier Name and Contact, any value is valid (including null).
 
-
-
         // Get writable database
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
         // Insert the new product with the given values
         long id = database.insert(ProductEntry.TABLE_NAME, null, values);
         // If the ID is -1, then the insertion failed. Log an error and return null.
@@ -217,6 +211,7 @@ public class ProductProvider extends ContentProvider {
         }
         // Otherwise, get writable database to update the data
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
         // Returns the number of database rows affected by the update statement
         return database.update(ProductEntry.TABLE_NAME, values, selection, selectionArgs);
     }
@@ -238,6 +233,19 @@ public class ProductProvider extends ContentProvider {
                 return database.delete(ProductEntry.TABLE_NAME, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Deletion is not supported for " + uri);
+        }
+    }
+
+    @Override
+    public String getType(Uri uri) {
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case PRODUCTS:
+                return ProductEntry.CONTENT_LIST_TYPE;
+            case PRODUCT_ID:
+                return ProductEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
         }
     }
 
