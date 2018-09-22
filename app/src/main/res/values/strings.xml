@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">InventoryApp</string>
+    <string name="app_name">Tech Accessories Inventory App</string>
 
     <!-- Label for overflow menu option that inserts fake product data into the app [CHAR LIMIT=20] -->
     <string name="action_insert_dummy_data">Insert Dummy Data</string>
@@ -26,6 +26,19 @@
     <string name="category_supplier">Supplier Info:</string>
     <string name="hint_supplier_name">Supplier name</string>
     <string name="hint_supplier_contact">Supplier contact</string>
+
+    <!-- Toast messages -->
+    <!-- Toast message in editor when new product has been successfully inserted [CHAR LIMIT=NONE] -->
+    <string name="editor_insert_item_successful">Item saved</string>
+
+    <!-- Toast message in editor when new product has failed to be inserted [CHAR LIMIT=NONE] -->
+    <string name="editor_insert_item_failed">Error with saving item</string>
+
+    <!-- Toast message in editor when current product was successfully updated [CHAR LIMIT=NONE] -->
+    <string name="editor_update_item_successful">Item updated</string>
+
+    <!-- Toast message in editor when current product has failed to be updated [CHAR LIMIT=NONE] -->
+    <string name="editor_update_item_failed">Error with updating item</string>
 
 
 </resources>
