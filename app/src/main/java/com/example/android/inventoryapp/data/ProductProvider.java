@@ -126,6 +126,26 @@ public class ProductProvider extends ContentProvider {
      * for that specific row in the database.
      */
     private Uri insertProduct(Uri uri, ContentValues values) {
+        // Check if the name is not null
+        String name = values.getAsString(ProductEntry.COLUMN_PRODUCT_NAME);
+        if (name == null) {
+            throw new IllegalArgumentException("Product requires a name");
+        }
+        // Check if price is > 0
+        Integer price = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_PRICE);
+        if (price != null && price >= 0) {
+            throw new IllegalArgumentException("Product requires valid price value");
+        }
+        // Check if quantity is >= 0
+        Integer quantity = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_QUANTITY);
+        if (quantity != null && quantity < 0) {
+            throw new IllegalArgumentException("Product requires valid quantity");
+        }
+
+        // No need to check the Supplier Name and Contact, any value is valid (including null).
+
+
+
         // Get writable database
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
         // Insert the new product with the given values
