@@ -3,7 +3,7 @@ package com.example.android.inventoryapp;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -13,14 +13,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
-import com.example.android.inventoryapp.data.ProductDbHelper;
 
 public class CatalogActivity extends AppCompatActivity {
-
-    /**
-     * Database helper that will provide us access to the database
-     */
-    private ProductDbHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +31,6 @@ public class CatalogActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        // To access our database, we instantiate our subclass of SQLiteOpenHelper
-        // and pass the context, which is the current activity.
-        mDbHelper = new ProductDbHelper(this);
     }
 
     @Override
@@ -127,8 +117,7 @@ public class CatalogActivity extends AppCompatActivity {
      * Helper method to insert hardcoded product data into database. For debugging purposes only.
      */
     private void insertProduct() {
-        // Gets the database in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
         // Create a ContentValues object where column names are the keys and attributes are the
         // values.
         ContentValues values = new ContentValues();
@@ -137,14 +126,11 @@ public class CatalogActivity extends AppCompatActivity {
         values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, 7);
         values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME, "Dell");
         values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_CONTACT, "4123324484");
-        // Insert a new row for Dummy in the database, returning the ID of that new row.
-        // The first argument for db.insert() is the products table name.
-        // The second argument provides the name of a column in which the framework
-        // can insert NULL in the event that the ContentValues is empty (if
-        // this is set to "null", then the framework will not insert a row when
-        // there are no values).
-        // The third argument is the ContentValues object containing the info for the product.
-        long newRowId = db.insert(ProductEntry.TABLE_NAME, null, values);
+        // Insert a new row for Toto into the provider using the ContentResolver.
+        // Use the {@link PetEntry#CONTENT_URI} to indicate that we want to insert
+        // into the pets database table.
+        // Receive the new content URI that will allow us to access Toto's data in the future.
+        Uri newUri = getContentResolver().insert(ProductEntry.CONTENT_URI, values);
     }
 
 
