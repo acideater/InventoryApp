@@ -56,7 +56,7 @@ public class CatalogActivity extends AppCompatActivity {
                 ProductEntry.COLUMN_PRODUCT_SUPPLIER_CONTACT
         };
         // Perform a query on the provider using the ContentResolver.
-        // Use the {@link PetEntry#CONTENT_URI} to access the pet data.
+        // Use the {@link ProductEntry#CONTENT_URI} to access the product data.
         Cursor cursor = getContentResolver().query(
                 ProductEntry.CONTENT_URI,   // The content URI of the words table
                 projection,             // The columns to return for each row
@@ -83,7 +83,7 @@ public class CatalogActivity extends AppCompatActivity {
             // Figure out the index of each column
             int idColumnIndex = cursor.getColumnIndex(ProductEntry._ID);
             int nameColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_NAME);
-            int priceColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_PRICE);
+            double priceColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_PRICE);
             int quantityColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_QUANTITY);
             int supplierNameColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME);
             int supplierContactColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_SUPPLIER_CONTACT);
@@ -93,7 +93,7 @@ public class CatalogActivity extends AppCompatActivity {
                 // at the current row the cursor is on.
                 int currentID = cursor.getInt(idColumnIndex);
                 String currentName = cursor.getString(nameColumnIndex);
-                String currentPrice = cursor.getString(priceColumnIndex);
+                double currentPrice = cursor.getDouble((int) priceColumnIndex);
                 int currentQuantity = cursor.getInt(quantityColumnIndex);
                 String currentSupplierName = cursor.getString(supplierNameColumnIndex);
                 String currentSupplierContact = cursor.getString(supplierContactColumnIndex);
@@ -122,13 +122,13 @@ public class CatalogActivity extends AppCompatActivity {
         // values.
         ContentValues values = new ContentValues();
         values.put(ProductEntry.COLUMN_PRODUCT_NAME, "Laptop");
-        values.put(ProductEntry.COLUMN_PRODUCT_PRICE, "900");
-        values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, 7);
+        values.put(ProductEntry.COLUMN_PRODUCT_PRICE, 900.00);
+        values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, 10);
         values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME, "Dell");
         values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_CONTACT, "4123324484");
-        // Insert a new row for Toto into the provider using the ContentResolver.
-        // Use the {@link PetEntry#CONTENT_URI} to indicate that we want to insert
-        // into the pets database table.
+        // Insert a new row into the provider using the ContentResolver.
+        // Use the {@link ProductEntry#CONTENT_URI} to indicate that we want to insert
+        // into the products database table.
         // Receive the new content URI that will allow us to access Toto's data in the future.
         Uri newUri = getContentResolver().insert(ProductEntry.CONTENT_URI, values);
     }

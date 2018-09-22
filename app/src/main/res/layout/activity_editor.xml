@@ -82,7 +82,7 @@
             <EditText
                 android:id="@+id/edit_supplier_contact"
                 android:hint="@string/hint_supplier_contact"
-                android:inputType="textCapWords"
+                android:inputType="textLongMessage"
                 style="@style/EditorFieldStyle" />
         </LinearLayout>
     </LinearLayout>
