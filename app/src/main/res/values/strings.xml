@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tech Accessories Inventory App</string>
+    <string name="app_name">TechStore Inventory App</string>
 
     <!-- Label for overflow menu option that inserts fake product data into the app [CHAR LIMIT=20] -->
     <string name="action_insert_dummy_data">Insert Dummy Data</string>
@@ -39,6 +39,11 @@
 
     <!-- Toast message in editor when current product has failed to be updated [CHAR LIMIT=NONE] -->
     <string name="editor_update_product_failed">Error with updating product</string>
+
+    <!-- Title text for the empty view [CHAR LIMIT=50] -->
+    <string name="empty_view_title_text">It\'s a bit empty here…</string>
+    <!-- Subtitle text for the empty view that prompts the user to add a product [CHAR LIMIT=50] -->
+    <string name="empty_view_subtitle_text">Get started by adding a product</string>
 
 
 </resources>
