@@ -66,5 +66,11 @@
     <!-- Subtitle text for the empty view that prompts the user to add a product [CHAR LIMIT=50] -->
     <string name="empty_view_subtitle_text">Get started by adding a product</string>
 
+    <!-- Numbers -->
+    <string name="zero">0</string>
+
+    <!-- Buttons -->
+    <string name="sale_button">Sale</string>
+
 
 </resources>

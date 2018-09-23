@@ -71,8 +71,10 @@ public class ProductProvider extends ContentProvider {
                         String sortOrder) {
         // Get readable database
         SQLiteDatabase database = mDbHelper.getReadableDatabase();
+
         // This cursor will hold the result of the query
         Cursor cursor;
+
         // Figure out if the URI matcher can match the URI to a specific code
         int match = sUriMatcher.match(uri);
         switch (match) {
@@ -94,6 +96,7 @@ public class ProductProvider extends ContentProvider {
                 // selection, we have 1 String in the selection arguments' String array.
                 selection = ProductEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+
                 // This will perform a query on the products table where the _id equals 3 to return
                 // a Cursor containing that row of the table.
                 cursor = database.query(ProductEntry.TABLE_NAME, projection, selection, selectionArgs,
@@ -150,6 +153,7 @@ public class ProductProvider extends ContentProvider {
 
         // Insert the new product with the given values
         long id = database.insert(ProductEntry.TABLE_NAME, null, values);
+
         // If the ID is -1, then the insertion failed. Log an error and return null.
         if (id == -1) {
             Log.e(LOG_TAG, "Failed to insert row for " + uri);

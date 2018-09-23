@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ public class ProductCursorAdapter extends CursorAdapter {
      * @param c       The cursor from which to get the data.
      */
     public ProductCursorAdapter(Context context, Cursor c) {
+
         super(context, c, 0 /* flags */);
     }
 
@@ -48,22 +50,38 @@ public class ProductCursorAdapter extends CursorAdapter {
      *
      * @param view    Existing view, returned earlier by newView() method
      * @param context app context
-     * @param cursor  The cursor from which to get the data. The cursor is already moved to the
+     * @param cursorData  The cursor from which to get the data. The cursor is already moved to the
      *                correct row.
      */
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, final Cursor cursorData) {
+        // Find button
+        Button saleButton = view.findViewById(R.id.sale_button);
+
         // Find individual views that we want to modify in the list item layout
         TextView nameTextView = view.findViewById(R.id.name);
-        TextView summaryTextView = view.findViewById(R.id.summary);
+        TextView quantityTextView = view.findViewById(R.id.quantity);
+        TextView priceTextView = view.findViewById(R.id.price);
+
         // Find the columns of product attributes that we're interested in
-        int nameColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_NAME);
-        int quantityColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_QUANTITY);
-        // Read the product attributes from the Cursor for the current product
-        String productName = cursor.getString(nameColumnIndex);
-        String productQuantity = cursor.getString(quantityColumnIndex);
+        final String productName = cursorData.getString(cursorData.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_NAME));
+        final int productQuantity = cursorData.getInt(cursorData.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_QUANTITY));
+        final double productPrice = cursorData.getDouble(cursorData.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_PRICE));
+
         // Update the TextViews with the attributes for the current product
         nameTextView.setText(productName);
-        summaryTextView.setText(productQuantity);
+        priceTextView.setText(Double.toString(productPrice));
+
+        // If the product quantity is empty string or null, then set it to zero.
+        if (productQuantity == 0) {
+            quantityTextView.setText(context.getString(R.string.zero));
+            // Disable button click
+            saleButton.setEnabled(false);
+        } else {
+            quantityTextView.setText(String.valueOf(productQuantity));
+            // Enable button click
+            saleButton.setEnabled(true);
+        }
+
     }
 }

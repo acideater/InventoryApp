@@ -142,7 +142,8 @@ public class CatalogActivity extends AppCompatActivity implements
         String[] projection = {
                 ProductEntry._ID,
                 ProductEntry.COLUMN_PRODUCT_NAME,
-                ProductEntry.COLUMN_PRODUCT_QUANTITY};
+                ProductEntry.COLUMN_PRODUCT_QUANTITY,
+                ProductEntry.COLUMN_PRODUCT_PRICE};
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
                 ProductEntry.CONTENT_URI,   // Provider content URI to query
