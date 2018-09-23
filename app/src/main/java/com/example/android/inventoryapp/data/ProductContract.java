@@ -83,7 +83,7 @@ public final class ProductContract {
         /**
          * Price of the product.
          * <p>
-         * Type: TEXT
+         * Type: DOUBLE
          */
         public final static String COLUMN_PRODUCT_PRICE = "price";
 

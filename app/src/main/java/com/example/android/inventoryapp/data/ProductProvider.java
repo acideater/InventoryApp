@@ -200,8 +200,8 @@ public class ProductProvider extends ContentProvider {
         // check that the price value is valid.
         if (values.containsKey(ProductEntry.COLUMN_PRODUCT_PRICE)) {
             // Check if the price is greater than 0 USD
-            Integer price = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_PRICE);
-            if (price != null && price > 0) {
+            Double price = values.getAsDouble(ProductEntry.COLUMN_PRODUCT_PRICE);
+            if (price == null || price < 0) {
                 throw new IllegalArgumentException("Product requires valid price");
             }
         }
