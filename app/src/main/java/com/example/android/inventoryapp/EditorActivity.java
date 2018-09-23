@@ -22,8 +22,15 @@ import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class EditorActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
+
+    // Set the locale manually
+    private Locale locale = Locale.US;
 
     /**
      * Identifier for the product data loader
@@ -153,7 +160,7 @@ public class EditorActivity extends AppCompatActivity implements
 
         // If the price is not provided by the user, don't try to parse the string into an
         // double value. Use 0 by default.
-        double price = 0;
+        double price = 0.00;
         if (!TextUtils.isEmpty(priceString)) {
             price = Double.parseDouble(priceString);
         }
@@ -330,18 +337,36 @@ public class EditorActivity extends AppCompatActivity implements
             int supplierContactIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_SUPPLIER_CONTACT);
             // Extract out the value from the Cursor for the given column index
             String name = cursor.getString(nameColumnIndex);
-            Double price = cursor.getDouble(priceColumnIndex);
+            double price = cursor.getDouble(priceColumnIndex);
             int quantity = cursor.getInt(quantityColumnIndex);
             String supplierName = cursor.getString(supplierNameColumnIndex);
             String supplierContact = cursor.getString(supplierContactIndex);
             // Update the views on the screen with the values from the database
             mNameEditText.setText(name);
-            mPriceEditText.setText(Double.toString(price));
+            mPriceEditText.setText(String.valueOf(formatPrice(price)));
             mQuantityEditText.setText(Integer.toString(quantity));
             mSupplierNameText.setText(supplierName);
             mSupplierContactText.setText(supplierContact);
         }
     }
+
+    /**
+     * Helper method that formats the price
+     *
+     * @param price is the original double price
+     * @return price    formatted with chosen currency in correct position
+     * Displays eg: $25 instead of $25.00 and $35.99 instead of $39.998
+     */
+    private String formatPrice(double price) {
+        // Get the correct currency symbol and position depending on chosen locale
+        DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance(locale);
+        // Never display .00 prices
+        formatter.setMinimumFractionDigits(0);
+        // Shorten .9998 to .99
+        formatter.setMaximumFractionDigits(2);
+        return formatter.format(price);
+    }
+
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
