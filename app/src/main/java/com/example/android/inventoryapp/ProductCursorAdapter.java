@@ -102,6 +102,7 @@ public class ProductCursorAdapter extends CursorAdapter {
             quantityTextView.setText(context.getString(R.string.zero));
             // Disable button click
             saleButton.setEnabled(false);
+            saleButton.setText(context.getString(R.string.sale_button_sold_out));
         } else {
             quantityTextView.setText(String.valueOf(productQuantity));
             // Enable button click

@@ -25,13 +25,18 @@
 
     <!-- Attributes in the editor [CHAR LIMIT=30] -->
     <string name="category_name">Product Info:</string>
+    <string name="editor_name">Product:&#160;</string>
     <string name="hint_product_name">Name</string>
+    <string name="editor_price">Price (USD):&#160;</string>
     <string name="hint_product_price">Price (USD)</string>
-    <string name="hint_product_quantity">Quantity</string>
+    <string name="editor_quantity">Quantity:&#160;</string>
+    <string name="hint_product_quantity">0</string>
 
     <!-- Supplier Info attributes in the editor [CHAR LIMIT=30] -->
     <string name="category_supplier">Supplier Info:</string>
+    <string name="editor_supplier_name">Supplier name:&#160;</string>
     <string name="hint_supplier_name">Supplier name</string>
+    <string name="editor_supplier_contact">Supplier contact:&#160;</string>
     <string name="hint_supplier_contact">Supplier contact</string>
 
     <!-- Toast messages -->
@@ -70,11 +75,14 @@
     <!-- Subtitle text for the empty view that prompts the user to add a product [CHAR LIMIT=50] -->
     <string name="empty_view_subtitle_text">Get started by adding a product</string>
 
-    <!-- Numbers -->
+    <!-- Numbers & Symbols -->
     <string name="zero">0</string>
+    <string name="plus">+</string>
+    <string name="minus">-</string>
 
     <!-- Buttons -->
     <string name="sale_button">Sale</string>
+    <string name="sale_button_sold_out">Sold Out</string>
 
     <!-- Toast message when item is not on stock [CHAR LIMIT=NONE] -->
     <string name="out_of_stock">This product is out of stock</string>

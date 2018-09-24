@@ -17,20 +17,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Locale;
+import static java.lang.Integer.parseInt;
 
 public class EditorActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    // Set the locale manually
-    private Locale locale = Locale.US;
+    /**
+     * Quantity for the plus and minus buttons
+     */
+    private int quantity;
 
     /**
      * Identifier for the product data loader
@@ -71,6 +72,8 @@ public class EditorActivity extends AppCompatActivity implements
      * Boolean flag that keeps track of whether the product has been edited (true) or not (false)
      */
     private boolean mProductHasChanged = false;
+
+
     /**
      * OnTouchListener that listens for any user touches on a View, implying that they are modifying
      * the view, and we change the mProductHasChanged boolean to true.
@@ -83,6 +86,7 @@ public class EditorActivity extends AppCompatActivity implements
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +96,7 @@ public class EditorActivity extends AppCompatActivity implements
         // in order to figure out if we're creating a new product or editing an existing one.
         Intent intent = getIntent();
         mCurrentProductUri = intent.getData();
+
         // If the intent DOES NOT contain a product content URI, then we know that we are
         // creating a new product.
         if (mCurrentProductUri == null) {
@@ -126,12 +131,72 @@ public class EditorActivity extends AppCompatActivity implements
         mQuantityEditText.setOnTouchListener(mTouchListener);
         mSupplierNameText.setOnTouchListener(mTouchListener);
         mSupplierContactText.setOnTouchListener(mTouchListener);
+
+
+        // Click listener for plus button
+        Button plusButton = findViewById(R.id.plus);
+        plusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, Integer.valueOf(mQuantityEditText.getText().toString()) + 1);
+                getContentResolver().update(mCurrentProductUri, contentValues, null, null);
+            }
+        });
+
+        // Click listener for minus button
+        Button minusButton = findViewById(R.id.minus);
+        minusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quantity = parseInt(mQuantityEditText.getText().toString().trim());
+                if (quantity > 0) {
+                    quantity--;
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, quantity);
+                    getContentResolver().update(mCurrentProductUri, contentValues, null, null);
+                }
+            }
+        });
     }
+
+
+/*
+    public boolean isValidProduct() {
+        // Read from input fields. Use trim to eliminate leading or trailing white space.
+        nameString = mNameEditText.getText().toString().trim();
+        quantityString = mQuantityEditText.getText().toString().trim();
+        priceString = mPriceEditText.getText().toString().trim();
+
+        // If quantity is left empty, set to zero
+        if (TextUtils.isEmpty(quantityString)) {
+            // Show the error in a toast message.
+            mQuantityEditText.setText(String.valueOf(0));
+        }
+
+        // Quick validation
+        if (TextUtils.isEmpty(nameString)) {
+            // Show the error in a toast message.
+            Toast.makeText(this, getString(R.string.toast_required_title),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (TextUtils.isEmpty(priceString)) {
+            // Show the error in a toast message.
+            Toast.makeText(this, getString(R.string.toast_required_price),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    */
 
     /**
      * Get user input from editor and save product into database
      */
     private void saveProduct() {
+
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
         String nameString = mNameEditText.getText().toString().trim();
@@ -170,7 +235,7 @@ public class EditorActivity extends AppCompatActivity implements
         // integer value. Use 0 by default.
         int quantity = 0;
         if (!TextUtils.isEmpty(quantityString)) {
-            quantity = Integer.parseInt(quantityString);
+            quantity = parseInt(quantityString);
         }
         values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, quantity);
 
@@ -207,8 +272,9 @@ public class EditorActivity extends AppCompatActivity implements
                 // Otherwise, the update was successful and we can display a toast.
                 Toast.makeText(this, getString(R.string.editor_update_product_successful),
                         Toast.LENGTH_SHORT).show();
-                }
+
             }
+        }
     }
 
     @Override
@@ -343,29 +409,13 @@ public class EditorActivity extends AppCompatActivity implements
             String supplierContact = cursor.getString(supplierContactIndex);
             // Update the views on the screen with the values from the database
             mNameEditText.setText(name);
-            mPriceEditText.setText(String.valueOf(formatPrice(price)));
+            mPriceEditText.setText(Double.toString(price));
             mQuantityEditText.setText(Integer.toString(quantity));
             mSupplierNameText.setText(supplierName);
             mSupplierContactText.setText(supplierContact);
         }
     }
 
-    /**
-     * Helper method that formats the price
-     *
-     * @param price is the original double price
-     * @return price    formatted with chosen currency in correct position
-     * Displays eg: $25 instead of $25.00 and $35.99 instead of $39.998
-     */
-    private String formatPrice(double price) {
-        // Get the correct currency symbol and position depending on chosen locale
-        DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance(locale);
-        // Never display .00 prices
-        formatter.setMinimumFractionDigits(0);
-        // Shorten .9998 to .99
-        formatter.setMaximumFractionDigits(2);
-        return formatter.format(price);
-    }
 
 
     @Override
@@ -388,7 +438,7 @@ public class EditorActivity extends AppCompatActivity implements
     private void showUnsavedChangesDialog(
             DialogInterface.OnClickListener discardButtonClickListener) {
         // Create an AlertDialog.Builder and set the message, and click listeners
-        // for the postivie and negative buttons on the dialog.
+        // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.unsaved_changes_dialog_msg);
         builder.setPositiveButton(R.string.discard, discardButtonClickListener);
