@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -138,9 +139,18 @@ public class EditorActivity extends AppCompatActivity implements
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, Integer.valueOf(mQuantityEditText.getText().toString()) + 1);
-                getContentResolver().update(mCurrentProductUri, contentValues, null, null);
+                String quantityString = mQuantityEditText.getText().toString().trim();
+                if (!TextUtils.isEmpty(quantityString)) {
+                    quantity = parseInt(quantityString);
+                    mQuantityEditText.setText(String.valueOf(0));
+                }
+                switch (v.getId()) {
+                    case R.id.plus:
+                        Log.v("EditorActivity: ", "Plus quantity button is clicked");
+                        quantity = quantity + 1;
+                        mQuantityEditText.setText(String.valueOf(quantity));
+                        break;
+                }
             }
         });
 
@@ -149,12 +159,21 @@ public class EditorActivity extends AppCompatActivity implements
         minusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                quantity = parseInt(mQuantityEditText.getText().toString().trim());
-                if (quantity > 0) {
-                    quantity--;
-                    ContentValues contentValues = new ContentValues();
-                    contentValues.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, quantity);
-                    getContentResolver().update(mCurrentProductUri, contentValues, null, null);
+                String quantityString = mQuantityEditText.getText().toString().trim();
+                if (!TextUtils.isEmpty(quantityString)) {
+                    quantity = parseInt(quantityString);
+                    mQuantityEditText.setText(String.valueOf(0));
+                }
+                switch (v.getId()) {
+                    case R.id.minus:
+                        Log.v("EditorActivity: ", "Minus quantity button is clicked");
+                        if (quantity < 1) {
+                            // Exit this method early because there's nothing left to do
+                            return;
+                        }
+                        quantity = quantity - 1;
+                        mQuantityEditText.setText(String.valueOf(quantity));
+                        break;
                 }
             }
         });
@@ -204,6 +223,7 @@ public class EditorActivity extends AppCompatActivity implements
         int quantity = 0;
         if (!TextUtils.isEmpty(quantityString)) {
             quantity = parseInt(quantityString);
+            mQuantityEditText.setText(String.valueOf(0));
         }
         values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, quantity);
 

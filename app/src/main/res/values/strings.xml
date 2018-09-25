@@ -54,8 +54,10 @@
 
     <!-- Dialog message when user is leaving editor but hasn't saved changes [CHAR LIMIT=NONE] -->
     <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+
     <!-- Dialog button text for the option to discard a user's changes [CHAR LIMIT=20] -->
     <string name="discard">Discard</string>
+
     <!-- Dialog button text for the option to keep editing the current product [CHAR LIMIT=20] -->
     <string name="keep_editing">Keep Editing</string>
 
@@ -76,12 +78,12 @@
     <string name="empty_view_subtitle_text">Get started by adding a product</string>
 
     <!-- Supplier contact -->
-    <string name="email_title">Supplies Order from TechShop</string>
+    <string name="email_title">Supplies Order from TechStore</string>
     <string name="email_compliment">Dear Sir or Madam,</string>
     <string name="email_body">We would like to purchase&#160;</string>
     <string name="email_from">&#160;from&#160;</string>
     <string name="email_confirm">Please confirm that you received this order. </string>
-    <string name="email_thank_you">Thank you.</string>
+    <string name="email_thank_you">Thank you,</string>
     <string name="email_signature">Supply Manager @ TechStore</string>
 
     <!-- Numbers & Symbols -->
