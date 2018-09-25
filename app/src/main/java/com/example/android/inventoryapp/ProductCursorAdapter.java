@@ -1,5 +1,6 @@
 package com.example.android.inventoryapp;
 
+import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -66,6 +67,7 @@ public class ProductCursorAdapter extends CursorAdapter {
      * @param cursorData  The cursor from which to get the data. The cursor is already moved to the
      *                correct row.
      */
+    @SuppressLint("SetTextI18n")
     @Override
     public void bindView(View view, final Context context, final Cursor cursorData) {
 
@@ -117,10 +119,10 @@ public class ProductCursorAdapter extends CursorAdapter {
             @Override
             public void onClick(View view) {
                 if (productQuantity > 0) {
-                    Uri currentBookUri = ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, Long.parseLong(id));
+                    Uri currentProductUri = ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, Long.parseLong(id));
                     ContentValues values = new ContentValues();
                     values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, productQuantity - 1);
-                    context.getContentResolver().update(currentBookUri, values, null, null);
+                    context.getContentResolver().update(currentProductUri, values, null, null);
                     swapCursor(cursorData);
                     // Check if out of stock to display toast
                     if (productQuantity == 1) {

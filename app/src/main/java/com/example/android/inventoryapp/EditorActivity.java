@@ -30,15 +30,13 @@ public class EditorActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
-     * Quantity for the plus and minus buttons
-     */
-    private int quantity;
-
-    /**
      * Identifier for the product data loader
      */
     private static final int EXISTING_PRODUCT_LOADER = 0;
-
+    /**
+     * Quantity for the plus and minus buttons
+     */
+    private int quantity;
     /**
      * Content URI for the existing product (null if it's a new product)
      */
