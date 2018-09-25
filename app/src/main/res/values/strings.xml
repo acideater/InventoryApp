@@ -36,8 +36,8 @@
     <string name="category_supplier">Supplier Info:</string>
     <string name="editor_supplier_name">Supplier name:&#160;</string>
     <string name="hint_supplier_name">Supplier name</string>
-    <string name="editor_supplier_contact">Supplier contact:&#160;</string>
-    <string name="hint_supplier_contact">Supplier contact</string>
+    <string name="editor_supplier_contact">Supplier e-mail:&#160;</string>
+    <string name="hint_supplier_contact">Supplier e-mail</string>
 
     <!-- Toast messages -->
     <!-- Toast message in editor when new product has been successfully inserted [CHAR LIMIT=NONE] -->
@@ -75,6 +75,15 @@
     <!-- Subtitle text for the empty view that prompts the user to add a product [CHAR LIMIT=50] -->
     <string name="empty_view_subtitle_text">Get started by adding a product</string>
 
+    <!-- Supplier contact -->
+    <string name="email_title">Supplies Order from TechShop</string>
+    <string name="email_compliment">Dear Sir or Madam,</string>
+    <string name="email_body">We would like to purchase&#160;</string>
+    <string name="email_from">&#160;from&#160;</string>
+    <string name="email_confirm">Please confirm that you received this order. </string>
+    <string name="email_thank_you">Thank you.</string>
+    <string name="email_signature">Supply Manager @ TechStore</string>
+
     <!-- Numbers & Symbols -->
     <string name="zero">0</string>
     <string name="plus">+</string>
@@ -83,6 +92,7 @@
     <!-- Buttons -->
     <string name="sale_button">Sale</string>
     <string name="sale_button_sold_out">Sold Out</string>
+    <string name="contact_supplier">Contact Supplier</string>
 
     <!-- Toast message when item is not on stock [CHAR LIMIT=NONE] -->
     <string name="out_of_stock">This product is out of stock</string>

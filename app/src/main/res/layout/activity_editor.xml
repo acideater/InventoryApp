@@ -128,20 +128,30 @@
             android:orientation="vertical"
             android:paddingLeft="4dp">
 
-            <!-- Name field -->
+            <!-- Supplier name field -->
             <EditText
                 android:id="@+id/edit_supplier_name"
                 style="@style/EditorFieldStyle"
                 android:hint="@string/hint_supplier_name"
                 android:inputType="textCapWords" />
 
-            <!-- Breed field -->
+            <!-- Supplier contact field -->
             <EditText
                 android:id="@+id/edit_supplier_contact"
                 style="@style/EditorFieldStyle"
                 android:hint="@string/hint_supplier_contact"
-                android:inputType="textLongMessage" />
+                android:inputType="textEmailAddress" />
         </LinearLayout>
+
     </LinearLayout>
+
+    <Button
+        android:id="@+id/contact_supplier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:onClick="contactButton"
+        android:text="@string/contact_supplier" />
 
 </LinearLayout>

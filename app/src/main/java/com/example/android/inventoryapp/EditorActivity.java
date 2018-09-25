@@ -160,38 +160,6 @@ public class EditorActivity extends AppCompatActivity implements
         });
     }
 
-
-/*
-    public boolean isValidProduct() {
-        // Read from input fields. Use trim to eliminate leading or trailing white space.
-        nameString = mNameEditText.getText().toString().trim();
-        quantityString = mQuantityEditText.getText().toString().trim();
-        priceString = mPriceEditText.getText().toString().trim();
-
-        // If quantity is left empty, set to zero
-        if (TextUtils.isEmpty(quantityString)) {
-            // Show the error in a toast message.
-            mQuantityEditText.setText(String.valueOf(0));
-        }
-
-        // Quick validation
-        if (TextUtils.isEmpty(nameString)) {
-            // Show the error in a toast message.
-            Toast.makeText(this, getString(R.string.toast_required_title),
-                    Toast.LENGTH_SHORT).show();
-            return false;
-        } else if (TextUtils.isEmpty(priceString)) {
-            // Show the error in a toast message.
-            Toast.makeText(this, getString(R.string.toast_required_price),
-                    Toast.LENGTH_SHORT).show();
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    */
-
     /**
      * Get user input from editor and save product into database
      */
@@ -508,4 +476,45 @@ public class EditorActivity extends AppCompatActivity implements
         // Close the activity
         finish();
     }
+
+    /**
+     * This method is called when the contact supplier button is clicked.
+     */
+
+    public void contactButton(View view) {
+        // Find Supplier contact
+        EditText email = findViewById(R.id.edit_supplier_contact);
+        String contact = email.getText().toString();
+
+        // Find Supplier name
+        EditText name = findViewById(R.id.edit_supplier_name);
+        String supplierName = name.getText().toString();
+
+        // Find product's name
+        EditText text = findViewById(R.id.edit_product_name);
+        String product = text.getText().toString();
+
+        String mailto = "mailto:" + contact;
+
+        String emailBody = getString(R.string.email_compliment) + "\n" +
+                getString(R.string.email_body) + product +
+                getString(R.string.email_from) + supplierName + "\n" +
+                getString(R.string.email_confirm) + "\n" +
+                getString(R.string.email_thank_you) + "\n" + "\n" +
+                getString(R.string.email_signature);
+
+        // Activate intent
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse(mailto)); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_title));
+        intent.putExtra(Intent.EXTRA_TEXT, emailBody);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+
+
+
+
 }

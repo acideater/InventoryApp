@@ -93,11 +93,11 @@ public class CatalogActivity extends AppCompatActivity implements
         // Create a ContentValues object where column names are the keys and attributes are the
         // values.
         ContentValues values = new ContentValues();
-        values.put(ProductEntry.COLUMN_PRODUCT_NAME, "Laptop");
-        values.put(ProductEntry.COLUMN_PRODUCT_PRICE, 900.00);
+        values.put(ProductEntry.COLUMN_PRODUCT_NAME, "MacBook Pro");
+        values.put(ProductEntry.COLUMN_PRODUCT_PRICE, 1400.00);
         values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, 10);
-        values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME, "Dell");
-        values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_CONTACT, "4123324484");
+        values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME, "Apple");
+        values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_CONTACT, "apple@apple.com");
         // Insert a new row into the provider using the ContentResolver.
         // Use the {@link ProductEntry#CONTENT_URI} to indicate that we want to insert
         // into the products database table.
