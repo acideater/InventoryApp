@@ -178,6 +178,49 @@ public class EditorActivity extends AppCompatActivity implements
     }
 
     /**
+     * Validate user inputs
+     */
+    public boolean validateProduct() {
+
+        // Read from input fields
+        // Use trim to eliminate leading or trailing white space
+        String nameString = mNameEditText.getText().toString().trim();
+        String priceString = mPriceEditText.getText().toString().trim();
+        String quantityString = mQuantityEditText.getText().toString().trim();
+        String supplierNameString = mSupplierNameText.getText().toString().trim();
+        String supplierContactString = mSupplierContactText.getText().toString().trim();
+
+        if (TextUtils.isEmpty(nameString)) {
+            // Toast with error
+            Toast.makeText(this, getString(R.string.required_field),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (TextUtils.isEmpty(priceString)) {
+            // Toast with error
+            Toast.makeText(this, getString(R.string.required_field),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (TextUtils.isEmpty(quantityString)) {
+            // Toast with error
+            Toast.makeText(this, getString(R.string.required_field),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (TextUtils.isEmpty(supplierNameString)) {
+            // Toast with error
+            Toast.makeText(this, getString(R.string.required_field),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (TextUtils.isEmpty(supplierContactString)) {
+            // Toast with error
+            Toast.makeText(this, getString(R.string.required_field),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * Get user input from editor and save product into database
      */
     private void saveProduct() {
@@ -193,13 +236,16 @@ public class EditorActivity extends AppCompatActivity implements
         // Check if this is supposed to be a new product
         // and check if all the fields in the editor are blank
         if (mCurrentProductUri == null &&
-                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) &&
-                TextUtils.isEmpty(quantityString) && TextUtils.isEmpty(supplierNameString) &&
+                TextUtils.isEmpty(nameString) ||
+                TextUtils.isEmpty(priceString) ||
+                TextUtils.isEmpty(quantityString) ||
+                TextUtils.isEmpty(supplierNameString) ||
                 TextUtils.isEmpty(supplierContactString)) {
             // Since no fields were modified, we can return early without creating a new product.
             // No need to create ContentValues and no need to do any ContentProvider operations.
             return;
         }
+
 
         // Create a ContentValues object where column names are the keys,
         // and product attributes from the editor are the values.
@@ -293,10 +339,14 @@ public class EditorActivity extends AppCompatActivity implements
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
                 // Save product to the database
-                saveProduct();
-                // Exit activity
-                finish();
-                return true;
+                if (validateProduct()) {
+                    saveProduct();
+                    // Exit activity
+                    finish();
+                    return true;
+                } else {
+                    return false;
+                }
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
                 // Pop up confirmation dialog for deletion

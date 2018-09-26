@@ -99,5 +99,7 @@
     <!-- Toast message when item is not on stock [CHAR LIMIT=NONE] -->
     <string name="out_of_stock">This product is out of stock</string>
 
+    <!-- Toast message when field is required on editor [CHAR LIMIT=NONE] -->
+    <string name="required_field">All fields are required</string>
 
 </resources>
