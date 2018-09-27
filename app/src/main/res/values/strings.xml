@@ -103,6 +103,11 @@
     <string name="out_of_stock">This product is out of stock</string>
 
     <!-- Toast message when field is required on editor [CHAR LIMIT=NONE] -->
-    <string name="required_field">All fields are required</string>
+    <string name="required_product">Product Info / Name field is required</string>
+    <string name="required_price">Product Price field is required</string>
+    <string name="required_quantity">Product quantity is required</string>
+    <string name="required_supplier_name">Supplier Name field is required</string>
+    <string name="required_supplier_email">Supplier Email field is required</string>
+    <string name="required_supplier_phone">Supplier Phone field is required</string>
 
 </resources>

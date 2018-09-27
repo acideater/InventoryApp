@@ -200,32 +200,32 @@ public class EditorActivity extends AppCompatActivity implements
 
         if (TextUtils.isEmpty(nameString)) {
             // Toast with error
-            Toast.makeText(this, getString(R.string.required_field),
+            Toast.makeText(this, getString(R.string.required_product),
                     Toast.LENGTH_SHORT).show();
             return false;
         } else if (TextUtils.isEmpty(priceString)) {
             // Toast with error
-            Toast.makeText(this, getString(R.string.required_field),
+            Toast.makeText(this, getString(R.string.required_price),
                     Toast.LENGTH_SHORT).show();
             return false;
         } else if (TextUtils.isEmpty(quantityString)) {
             // Toast with error
-            Toast.makeText(this, getString(R.string.required_field),
+            Toast.makeText(this, getString(R.string.required_quantity),
                     Toast.LENGTH_SHORT).show();
             return false;
         } else if (TextUtils.isEmpty(supplierNameString)) {
             // Toast with error
-            Toast.makeText(this, getString(R.string.required_field),
+            Toast.makeText(this, getString(R.string.required_supplier_name),
                     Toast.LENGTH_SHORT).show();
             return false;
         } else if (TextUtils.isEmpty(supplierContactString)) {
             // Toast with error
-            Toast.makeText(this, getString(R.string.required_field),
+            Toast.makeText(this, getString(R.string.required_supplier_email),
                     Toast.LENGTH_SHORT).show();
             return false;
         } else if (TextUtils.isEmpty(supplierPhone)) {
             // Toast with error
-            Toast.makeText(this, getString(R.string.required_field),
+            Toast.makeText(this, getString(R.string.required_supplier_phone),
                     Toast.LENGTH_SHORT).show();
             return false;
         } else {
