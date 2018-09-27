@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -98,6 +97,7 @@ public class CatalogActivity extends AppCompatActivity implements
         values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, 10);
         values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME, "Apple");
         values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_CONTACT, "apple@apple.com");
+        values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE, "412412412");
         // Insert a new row into the provider using the ContentResolver.
         // Use the {@link ProductEntry#CONTENT_URI} to indicate that we want to insert
         // into the products database table.
@@ -110,7 +110,6 @@ public class CatalogActivity extends AppCompatActivity implements
      */
     private void deleteAllProducts() {
         int rowsDeleted = getContentResolver().delete(ProductEntry.CONTENT_URI, null, null);
-        Log.v("CatalogActivity", rowsDeleted + " rows deleted from pet database");
     }
 
     @Override

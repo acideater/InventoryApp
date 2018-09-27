@@ -108,6 +108,13 @@ public final class ProductContract {
          */
         public final static String COLUMN_PRODUCT_SUPPLIER_CONTACT = "supplierContact";
 
+        /**
+         * Supplier phone number.
+         * <p>
+         * Type: TEXT
+         */
+        public final static String COLUMN_PRODUCT_SUPPLIER_PHONE = "supplierPhone";
+
     }
 
 

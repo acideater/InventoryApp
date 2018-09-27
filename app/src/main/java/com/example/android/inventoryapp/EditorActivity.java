@@ -68,6 +68,11 @@ public class EditorActivity extends AppCompatActivity implements
     private EditText mSupplierContactText;
 
     /**
+     * EditText field to enter the supplier's phone number
+     */
+    private EditText mSupplierPhoneText;
+
+    /**
      * Boolean flag that keeps track of whether the product has been edited (true) or not (false)
      */
     private boolean mProductHasChanged = false;
@@ -120,7 +125,8 @@ public class EditorActivity extends AppCompatActivity implements
         mPriceEditText = findViewById(R.id.edit_product_price);
         mQuantityEditText = findViewById(R.id.edit_product_quantity);
         mSupplierNameText = findViewById(R.id.edit_supplier_name);
-        mSupplierContactText = findViewById(R.id.edit_supplier_contact);
+        mSupplierContactText = findViewById(R.id.edit_supplier_email);
+        mSupplierPhoneText = findViewById(R.id.edit_supplier_phone);
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
@@ -130,6 +136,7 @@ public class EditorActivity extends AppCompatActivity implements
         mQuantityEditText.setOnTouchListener(mTouchListener);
         mSupplierNameText.setOnTouchListener(mTouchListener);
         mSupplierContactText.setOnTouchListener(mTouchListener);
+        mSupplierPhoneText.setOnTouchListener(mTouchListener);
 
 
         // Click listener for plus button
@@ -189,6 +196,7 @@ public class EditorActivity extends AppCompatActivity implements
         String quantityString = mQuantityEditText.getText().toString().trim();
         String supplierNameString = mSupplierNameText.getText().toString().trim();
         String supplierContactString = mSupplierContactText.getText().toString().trim();
+        String supplierPhone = mSupplierPhoneText.getText().toString().trim();
 
         if (TextUtils.isEmpty(nameString)) {
             // Toast with error
@@ -215,6 +223,11 @@ public class EditorActivity extends AppCompatActivity implements
             Toast.makeText(this, getString(R.string.required_field),
                     Toast.LENGTH_SHORT).show();
             return false;
+        } else if (TextUtils.isEmpty(supplierPhone)) {
+            // Toast with error
+            Toast.makeText(this, getString(R.string.required_field),
+                    Toast.LENGTH_SHORT).show();
+            return false;
         } else {
             return true;
         }
@@ -232,6 +245,7 @@ public class EditorActivity extends AppCompatActivity implements
         String quantityString = mQuantityEditText.getText().toString().trim();
         String supplierNameString = mSupplierNameText.getText().toString().trim();
         String supplierContactString = mSupplierContactText.getText().toString().trim();
+        String supplierPhone = mSupplierPhoneText.getText().toString().trim();
 
         // Check if this is supposed to be a new product
         // and check if all the fields in the editor are blank
@@ -240,7 +254,8 @@ public class EditorActivity extends AppCompatActivity implements
                 TextUtils.isEmpty(priceString) ||
                 TextUtils.isEmpty(quantityString) ||
                 TextUtils.isEmpty(supplierNameString) ||
-                TextUtils.isEmpty(supplierContactString)) {
+                TextUtils.isEmpty(supplierContactString) ||
+                TextUtils.isEmpty(supplierPhone)) {
             // Since no fields were modified, we can return early without creating a new product.
             // No need to create ContentValues and no need to do any ContentProvider operations.
             return;
@@ -253,6 +268,7 @@ public class EditorActivity extends AppCompatActivity implements
         values.put(ProductEntry.COLUMN_PRODUCT_NAME, nameString);
         values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME, supplierNameString);
         values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_CONTACT, supplierContactString);
+        values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE, supplierPhone);
 
         // If the price is not provided by the user, don't try to parse the string into an
         // double value. Use 0 by default.
@@ -412,7 +428,8 @@ public class EditorActivity extends AppCompatActivity implements
                 ProductEntry.COLUMN_PRODUCT_PRICE,
                 ProductEntry.COLUMN_PRODUCT_QUANTITY,
                 ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME,
-                ProductEntry.COLUMN_PRODUCT_SUPPLIER_CONTACT};
+                ProductEntry.COLUMN_PRODUCT_SUPPLIER_CONTACT,
+                ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE};
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
                 mCurrentProductUri,         // Query the content URI for the current product
@@ -437,18 +454,21 @@ public class EditorActivity extends AppCompatActivity implements
             int quantityColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_QUANTITY);
             int supplierNameColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME);
             int supplierContactIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_SUPPLIER_CONTACT);
+            int supplierPhoneColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE);
             // Extract out the value from the Cursor for the given column index
             String name = cursor.getString(nameColumnIndex);
             double price = cursor.getDouble(priceColumnIndex);
             int quantity = cursor.getInt(quantityColumnIndex);
             String supplierName = cursor.getString(supplierNameColumnIndex);
             String supplierContact = cursor.getString(supplierContactIndex);
+            String supplierPhone = cursor.getString(supplierPhoneColumnIndex);
             // Update the views on the screen with the values from the database
             mNameEditText.setText(name);
             mPriceEditText.setText(Double.toString(price));
             mQuantityEditText.setText(Integer.toString(quantity));
             mSupplierNameText.setText(supplierName);
             mSupplierContactText.setText(supplierContact);
+            mSupplierPhoneText.setText(supplierPhone);
         }
     }
 
@@ -462,6 +482,7 @@ public class EditorActivity extends AppCompatActivity implements
         mQuantityEditText.setText("");
         mSupplierNameText.setText("");
         mSupplierContactText.setText("");
+        mSupplierPhoneText.setText("");
     }
 
     /**
@@ -546,12 +567,12 @@ public class EditorActivity extends AppCompatActivity implements
     }
 
     /**
-     * This method is called when the contact supplier button is clicked.
+     * This method is called when the email supplier button is clicked.
      */
 
-    public void contactButton(View view) {
+    public void emailButton(View view) {
         // Find Supplier contact
-        EditText email = findViewById(R.id.edit_supplier_contact);
+        EditText email = findViewById(R.id.edit_supplier_email);
         String contact = email.getText().toString();
 
         // Find Supplier name
@@ -581,8 +602,23 @@ public class EditorActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * This method is called when the phone supplier button is clicked.
+     */
 
+    public void phoneButton(View view) {
+        // Click listener for phone button
+        Button phoneButton = findViewById(R.id.phone_supplier);
+        phoneButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",
+                        mSupplierPhoneText.getText().toString(), null));
+                startActivity(intent);
+                finish();
+            }
+        });
 
+    }
 
 
 }
