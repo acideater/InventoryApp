@@ -607,18 +607,10 @@ public class EditorActivity extends AppCompatActivity implements
      */
 
     public void phoneButton(View view) {
-        // Click listener for phone button
-        Button phoneButton = findViewById(R.id.phone_supplier);
-        phoneButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",
-                        mSupplierPhoneText.getText().toString(), null));
-                startActivity(intent);
-                finish();
-            }
-        });
-
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",
+                mSupplierPhoneText.getText().toString(), null));
+        startActivity(intent);
+        finish();
     }
-
 
 }
