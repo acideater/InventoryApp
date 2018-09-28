@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -151,7 +150,6 @@ public class EditorActivity extends AppCompatActivity implements
                 }
                 switch (v.getId()) {
                     case R.id.plus:
-                        Log.v("EditorActivity: ", "Plus quantity button is clicked");
                         quantity = quantity + 1;
                         mQuantityEditText.setText(String.valueOf(quantity));
                         break;
@@ -171,7 +169,6 @@ public class EditorActivity extends AppCompatActivity implements
                 }
                 switch (v.getId()) {
                     case R.id.minus:
-                        Log.v("EditorActivity: ", "Minus quantity button is clicked");
                         if (quantity < 1) {
                             // Exit this method early because there's nothing left to do
                             return;
@@ -363,7 +360,7 @@ public class EditorActivity extends AppCompatActivity implements
                 } else {
                     return false;
                 }
-            // Respond to a click on the "Delete" menu option
+                // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
                 // Pop up confirmation dialog for deletion
                 showDeleteConfirmationDialog();
@@ -471,7 +468,6 @@ public class EditorActivity extends AppCompatActivity implements
             mSupplierPhoneText.setText(supplierPhone);
         }
     }
-
 
 
     @Override
@@ -609,8 +605,10 @@ public class EditorActivity extends AppCompatActivity implements
     public void phoneButton(View view) {
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",
                 mSupplierPhoneText.getText().toString(), null));
-        startActivity(intent);
-        finish();
-    }
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+            finish();
+        }
 
+    }
 }
